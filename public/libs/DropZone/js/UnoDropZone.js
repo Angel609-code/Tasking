@@ -41,8 +41,8 @@ var UnoDropZone = {
         });
     },
     initSingleFileZone: function (e, uploadMessage) {
-        console.log('initSingleFileZone:');
-        console.log(e);
+        // console.log('initSingleFileZone:');
+        // console.log(e);
         $(e).html('');       
 
         //create input area 
@@ -62,7 +62,7 @@ var UnoDropZone = {
         inputFiled.addEventListener('change', UnoDropZone.handleInputFiles, false);
 
         inputDiv.appendChild(inputFiled);
-
+        
         e.appendChild(inputDiv);
 
         //create drop-click-zone area 
@@ -99,10 +99,14 @@ var UnoDropZone = {
             message = e.getAttribute('data-unodz-msg');
         }
 
+        let cartel = document.createElement('div');
+        cartel.classList.add('cartel');
+        e.appendChild(cartel);
+
         messageDiv.innerHTML = message;
         messageDiv.addEventListener("click", UnoDropZone.dropZone.click, false);
         e.appendChild(messageDiv);
-
+        
     },
     handleInputFiles: function () {
         UnoDropZone.handleFiles(this.files, this);
@@ -119,6 +123,8 @@ var UnoDropZone = {
         console.log(file.name);
         console.log(file.size);
         console.log(UnoDropZone.util.bytesToSize(file.size));
+        
+        $(".custom-drop-zone")[0].style.setProperty("background-image", "none");
         
         // check type 
         var imageType = /^image\//;

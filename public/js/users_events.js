@@ -192,6 +192,42 @@ $("#unlock").on('submit', function(evt){
     });
 });
 
+$("#save-image").on('click', function(e){
+    let inputfile = $(".filethumbnail img");
+
+    if(inputfile.length == 0) alert("No hay ninguna imagen subida");
+    else{
+        let useremail = localStorage.getItem("useremail");
+
+        let settings = {
+            "url": "https://angel609.es/testproyects/Data/users.php?email=" + useremail,
+            "method": "GET",
+            "timeout": 0,
+        };
+
+        $.ajax(settings).done(function (response) {
+            let res = JSON.parse(response);
+            var form = new FormData();
+            form.append("id", res[0].id);
+            form.append("photo", inputfile[0].getAttribute("src"));
+
+            var settings = {
+                "url": "https://angel609.es/testproyects/Data/users.php",
+                "method": "POST",
+                "timeout": 0,
+                "processData": false,
+                "mimeType": "multipart/form-data",
+                "contentType": false,
+                "data": form
+                };
+
+            $.ajax(settings).done(function (response) {
+                window.location.reload();
+            });
+        });
+    }
+});
+
 // function sendMessage(email, username, password){
 //     $.ajax({
 //         type: "POST",

@@ -38,18 +38,30 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $sql = "INSERT INTO Users (name, email, password) VALUES (:name, :email, :password)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':name', $_POST['name']);
-        $stmt->bindValue(':email', $_POST['email']);
-        $stmt->bindValue(':password', $_POST['password']);
-        $stmt->execute();
-
-        $idPost = $pdo->lastInsertId();
-        if($idPost){
+        if($_POST['photo']){
+            $sql = "UPDATE Users SET photo= :photo WHERE id= :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':id', $_POST['id']);
+            $stmt->bindValue(':photo', $_POST['photo']);
+            $stmt->execute();
+            
             header("HTTP/1.1 200 OK");
-            echo "data inserted";
+            echo "data upadated";
             exit;
+        }else{
+            $sql = "INSERT INTO Users (name, email, password) VALUES (:name, :email, :password)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':name', $_POST['name']);
+            $stmt->bindValue(':email', $_POST['email']);
+            $stmt->bindValue(':password', $_POST['password']);
+            $stmt->execute();
+            
+            $idPost = $pdo->lastInsertId();
+            if($idPost){
+                header("HTTP/1.1 200 OK");
+                echo "data inserted";
+                exit;
+            }
         }
     }
 

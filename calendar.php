@@ -28,6 +28,15 @@
             position: relative;
             left: 50%;
             transform: translate(-50%);
+            position: relative;
+        }
+
+        .custom-drop-zone:hover .cartel{
+            background-color: rgba(0,0,0,0.6);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
         }
     </style>
 </head>
@@ -159,7 +168,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Guardar cambios</button>
+                            <button type="button" class="btn btn-primary" id="save-image">Guardar cambios</button>
                         </div>
                         </div>
                     </div>
@@ -234,7 +243,25 @@
             });
         }else{
             if(localStorage.getItem('useremail') && localStorage.getItem('userpass').length > 0){
-            
+                let useremail = localStorage.getItem("useremail");
+
+                let settings = {
+                    "url": "https://angel609.es/testproyects/Data/users.php?email=" + useremail,
+                    "method": "GET",
+                    "timeout": 0,
+                };
+
+                $.ajax(settings).done(function (response) {
+                    let res = JSON.parse(response);
+                    if(res[0].photo && res[0].photo.length > 0){
+                        $(".rounded-circle.header-profile-user")[0].setAttribute("src", res[0].photo);
+
+                        $(".custom-drop-zone")[0].style.setProperty("background-image", "url(" + res[0].photo + ")");
+                        $(".custom-drop-zone")[0].style.setProperty("background-size", "cover");
+                        $(".custom-drop-zone")[0].style.setProperty("background-position", "center");
+                        $(".custom-drop-zone")[0].style.setProperty("background-repeat", "no-repeat");
+                    }
+                });
             }else{
                 let settings = {
                     "url": "calendar.php",
