@@ -30,11 +30,11 @@
 
                     <div class="card-body p-4">
                         <div class="p-3">
-                            <form class="mt-4" action="index.php" id="lgn">
+                            <form class="mt-4" id="lgn">
 
                                 <div class="mb-3 mt-5">
                                     <label class="form-label" for="useremail">Correo</label>
-                                    <input type="text" class="form-control" id="username" placeholder="Ingresar correo">
+                                    <input type="text" class="form-control" id="useremail" placeholder="Ingresar correo">
                                 </div>
 
                                 <div class="mb-3 mt-4">
@@ -57,7 +57,7 @@
 
                 <div class="mt-5 text-center">
                     <p>¿No tienes una cuenta? <a href="pages-register.php" class="fw-medium text-primary"> Registrate ahora </a> </p>
-                    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Tasking. <i class="mdi mdi-heart text-danger"></i> by Angel609</p>
+                    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Tasking <i class="mdi mdi-heart text-danger"></i> by Angel609</p>
                 </div>
 
 
@@ -67,31 +67,36 @@
 </div>
 <?php include 'layouts/footerScript.php'; ?>
 <?php include "layouts/content-end.php"; ?>
-<script type="text/javascript">
-    $('#lgn').submit(function (evt) {
-        evt.preventDefault();
 
-        let useremail = document.querySelector("#useremail").value.toLowerCase();
-        let userpass = document.querySelector("#userpassword").value.toLowerCase();
-        let settings = {
-            "url": "https://angel609.es/testproyects/Data/users.php?email=" + useremail + "&password=" + userpass,
-            "method": "GET",
-            "timeout": 0,
-        };
-        console.log(settings.url);
-        $.ajax(settings).done(function (response) {
-            if(JSON.parse(response).length == 0){
-                alert("El usuario o contraseña no coninciden");
-            }else{
-                localStorage.setItem('useremail', useremail);
-                localStorage.setItem('userpass', userpass);
-                window.location.href = "calendar.php";
-            }
-        });
-    });
+<!-- laoder layout -->
+<?php include "layouts/loader.php"; ?>
+
+<script type="text/javascript">
     $(document).ready(function() {
-        if(localStorage.getItem('useremail') && localStorage.getItem('userpass').length > 0){
-            window.location.href = "calendar.php";   
+        if(localStorage.getItem("lock") == "true"){
+            let settings = {
+                "url": "calendar.php",
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function(res){
+                setTimeout(function(){
+                    window.location.href = "pages-lock-screen.php"; 
+                }, 1000);
+            });
+        }else if(localStorage.getItem('useremail') && localStorage.getItem('userpass').length > 0){
+            let settings = {
+                "url": "index.php",
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function(res){
+                setTimeout(function(){
+                    window.location.href = "calendar.php"; 
+                }, 1000);
+            });  
         }
     });
 </script>

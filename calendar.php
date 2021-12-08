@@ -14,8 +14,22 @@
     <link href="public/libs/@fullcalendar/bootstrap/main.min.css" rel="stylesheet" type="text/css" />
     <link href="public/libs/@fullcalendar/timegrid/main.min.css" rel="stylesheet" type="text/css" />
 
-    <?php include 'layouts/headerStyle.php'; ?>
+    <!-- drop zone -->
+    <link rel="stylesheet" href="public/libs/DropZone/css/UnoDropZone.css">
 
+    <?php include 'layouts/headerStyle.php'; ?>
+    <style>
+        .custom-drop-zone{
+            width: 250px;
+            height: 250px;
+            border-style: dashed;
+            border-color: gray;
+            background: #e5e5e5e5;
+            position: relative;
+            left: 50%;
+            transform: translate(-50%);
+        }
+    </style>
 </head>
 
 <?php include 'layouts/master.php'; echo setLayout();?>
@@ -130,13 +144,32 @@
                     </div> <!-- end modal dialog-->
                 </div>
                 <!-- end modal-->
+
+                <!-- Adding modal to save photos -->
+                <!-- Modal -->
+                <div class="modal fade" id="photo" tabindex="-1" aria-labelledby="photoLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="photoLabel">Foto de perfil</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <div class="file-upload custom-drop-zone" data-input-name="input" data-unodz-msg="Cambiar de foto de perfil"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
     </div> <!-- container-fluid -->
 </div>
 <!-- End Page-content -->
-
 
 <footer class="footer" style="box-shadow: 1px 0 8px rgba(0,0,0,0.2); left: 0;">
     <div class="container-fluid">
@@ -163,17 +196,58 @@
 <script src="public/libs/@fullcalendar/timegrid/main.min.js"></script>
 <script src="public/libs/@fullcalendar/interaction/main.min.js"></script>
 
+<!-- drop zone -->
+<script src="public/libs/DropZone/js/UnoDropZone.js"></script>
+
 <!-- Calendar init -->
 <script src="public/js/pages/calendar.init.js"></script>
 
 <?php include "layouts/content-end.php"; ?>
 
+<!-- laoder layout -->
+<?php include "layouts/loader.php"; ?>
+
 <script>
+    var MyObject = {
+        foo: function (uplaodCont) {
+            console.log('calling foo');
+            console.log('uplaodCont:');
+            console.log(uplaodCont);
+            $('#callbackmsg').html('Call MyObject.foo() function at:' + new Date())
+        }
+    };
+
     $(document).ready(function() {
-        if(localStorage.getItem('useremail') && localStorage.getItem('userpass').length > 0){
-            
+        UnoDropZone.init();
+        
+        if(localStorage.getItem("lock") == "true"){
+            let settings = {
+                "url": "calendar.php",
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function(res){
+                setTimeout(function(){
+                    window.location.href = "pages-lock-screen.php"; 
+                }, 1000);
+            });
         }else{
-            window.location.href = "index.php";
+            if(localStorage.getItem('useremail') && localStorage.getItem('userpass').length > 0){
+            
+            }else{
+                let settings = {
+                    "url": "calendar.php",
+                    "method": "GET",
+                    "timeout": 0,
+                };
+
+                $.ajax(settings).done(function(res){
+                    setTimeout(function(){
+                        window.location.href = "index.php"; 
+                    }, 1000);
+                });
+            }
         }
     });
 </script>

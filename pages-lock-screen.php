@@ -21,7 +21,7 @@
                     <div class="bg-primary">
                         <div class="text-primary text-center p-4">
                             <h5 class="text-white font-size-20">Bloqueado</h5>
-                            <p class="text-white-50">Hola user name, ingresa tu contraseña para desbloquear la pantalla!</p>
+                            <p class="text-white-50" id="lblOne">Hola user name, ingresa tu contraseña para desbloquear la pantalla!</p>
                             <a href="index.html" class="logo logo-admin">
                                 <img src="https://i.ibb.co/TwTd6GQ/Grupo-5.png" height="24" alt="logo">
                             </a>
@@ -30,14 +30,14 @@
 
                     <div class="card-body p-4">
                         <div class="p-3">
-                            <form class="mt-4" action="index.html">
+                            <form class="mt-4" id="unlock">
 
                                 <div class="pt-3 text-center">
                                     <img src="public/images/users/user-4.jpg" class="rounded-circle img-thumbnail avatar-lg" alt="thumbnail">
-                                    <h6 class="font-size-16 mt-3">User email</h6>
+                                    <h6 class="font-size-16 mt-3" id="lblTwo">User email</h6>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="mb-3 mt-5">
                                     <label class="form-label" for="userpassword">Contraseña</label>
                                     <input type="password" class="form-control" id="userpassword" placeholder="Ingresar contraseña">
                                 </div>
@@ -68,3 +68,27 @@
 
 <?php include 'layouts/footerScript.php'; ?>
 <?php include "layouts/content-end.php"; ?>
+
+<!-- laoder layout -->
+<?php include "layouts/loader.php"; ?>
+
+
+<script>
+    $(document).ready(function(){
+        if(localStorage.getItem("lock") != "true"){
+            let settings = {
+                "url": "pages-lock-screen.php",
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function(res){
+                setTimeout(function(){
+                    window.location.href = "index.php";
+                }, 1500);
+            });
+        }
+        document.querySelector("#lblOne").innerHTML = "Hola " + localStorage.getItem("username") +", ingresa tu contraseña para desbloquear la pantalla!";
+        document.querySelector("#lblTwo").innerHTML = localStorage.getItem("useremail");
+    });
+</script>
