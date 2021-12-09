@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>Calendario</title>
@@ -37,6 +36,19 @@
             height: 100%;
             position: absolute;
             top: 0;
+        }
+
+        #avatar-letter {
+            display: none;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.3rem;
+            font-weight: 500;
+            width: 32px;
+            height: 32px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
         }
     </style>
 </head>
@@ -116,7 +128,7 @@
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Nombre del evento</label>
-                                                <input class="form-control" placeholder="Insert Event Name"
+                                                <input class="form-control" placeholder="Insertar nombre del evento"
                                                     type="text" name="title" id="event-title" required value="" />
                                                 <div class="invalid-feedback">Proporcione un nombre de evento válido</div>
                                             </div>
@@ -126,7 +138,6 @@
                                                 <label class="form-label">Category</label>
                                                 <select class="form-select" name="category"
                                                     id="event-category">
-                                                    <option selected> --Seleccionar-- </option>
                                                     <option value="bg-success">Ligero</option>
                                                     <option value="bg-primary">Primario</option>
                                                     <option value="bg-info">Información</option>
@@ -143,6 +154,7 @@
                                             <button type="button" class="btn btn-danger" id="btn-delete-event">Borrar</button>
                                         </div>
                                         <div class="col-6 text-end">
+                                            <p id="eventId" hidden></p>
                                             <button type="button" class="btn btn-light me-1" data-bs-dismiss="modal">Cerrar</button>
                                             <button type="submit" class="btn btn-success" id="btn-save-event">Guardar</button>
                                         </div>
@@ -216,65 +228,4 @@
 <!-- laoder layout -->
 <?php include "layouts/loader.php"; ?>
 
-<script>
-    var MyObject = {
-        foo: function (uplaodCont) {
-            console.log('calling foo');
-            console.log('uplaodCont:');
-            console.log(uplaodCont);
-            $('#callbackmsg').html('Call MyObject.foo() function at:' + new Date())
-        }
-    };
-
-    $(document).ready(function() {
-        UnoDropZone.init();
-        
-        if(localStorage.getItem("lock") == "true"){
-            let settings = {
-                "url": "calendar.php",
-                "method": "GET",
-                "timeout": 0,
-            };
-
-            $.ajax(settings).done(function(res){
-                setTimeout(function(){
-                    window.location.href = "pages-lock-screen.php"; 
-                }, 1000);
-            });
-        }else{
-            if(localStorage.getItem('useremail') && localStorage.getItem('userpass').length > 0){
-                let useremail = localStorage.getItem("useremail");
-
-                let settings = {
-                    "url": "https://angel609.es/testproyects/Data/users.php?email=" + useremail,
-                    "method": "GET",
-                    "timeout": 0,
-                };
-
-                $.ajax(settings).done(function (response) {
-                    let res = JSON.parse(response);
-                    if(res[0].photo && res[0].photo.length > 0){
-                        $(".rounded-circle.header-profile-user")[0].setAttribute("src", res[0].photo);
-
-                        $(".custom-drop-zone")[0].style.setProperty("background-image", "url(" + res[0].photo + ")");
-                        $(".custom-drop-zone")[0].style.setProperty("background-size", "cover");
-                        $(".custom-drop-zone")[0].style.setProperty("background-position", "center");
-                        $(".custom-drop-zone")[0].style.setProperty("background-repeat", "no-repeat");
-                    }
-                });
-            }else{
-                let settings = {
-                    "url": "calendar.php",
-                    "method": "GET",
-                    "timeout": 0,
-                };
-
-                $.ajax(settings).done(function(res){
-                    setTimeout(function(){
-                        window.location.href = "index.php"; 
-                    }, 1000);
-                });
-            }
-        }
-    });
-</script>
+<script src="public/js/calendar_main.js"></script>

@@ -16,6 +16,9 @@
         if(isset($_GET['id'])){
             $sql = $pdo->prepare("SELECT * FROM Events WHERE id=:id");
             $sql->bindValue(':id', $_GET['id']);
+        }else if(isset($_GET['useremail']) ){
+            $sql = $pdo->prepare("SELECT * FROM Events WHERE useremail=:useremail");
+            $sql->bindValue(':useremail', $_GET['useremail']);
         }else{
             $sql = $pdo->prepare("SELECT * FROM Events");
         }
@@ -28,11 +31,12 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $sql = "INSERT INTO Events (useremail, title, start, allDay, className) VALUES (:useremail, :title, :start, :allDay, :className)";
+        $sql = "INSERT INTO Events (useremail, title, start, end, allDay, className) VALUES (:useremail, :title, :start, :end, :allDay, :className)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':useremail', $_POST['useremail']);
         $stmt->bindValue(':title', $_POST['title']);
         $stmt->bindValue(':start', $_POST['start']);
+        $stmt->bindValue(':end', $_POST['end']);
         $stmt->bindValue(':allDay', $_POST['allDay']);
         $stmt->bindValue(':className', $_POST['className']);
         $stmt->execute();
@@ -46,11 +50,12 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'PUT'){
-        $sql = "UPDATE Events SET useremail= :useremail, title= :title, start = :start, allDay =:allDay, className=:className WHERE id= :id";
+        $sql = "UPDATE Events SET useremail= :useremail, title= :title, start= :start, end= :end, allDay= :allDay, className=:className WHERE id= :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':useremail', $_GET['useremail']);
-        $stmt->bindValue(':title', $_GETT['title']);
+        $stmt->bindValue(':title', $_GET['title']);
         $stmt->bindValue(':start', $_GET['start']);
+        $stmt->bindValue(':end', $_GET['end']);
         $stmt->bindValue(':allDay', $_GET['allDay']);
         $stmt->bindValue(':className', $_GET['className']);
         $stmt->bindValue(':id', $_GET['id']);
@@ -58,7 +63,7 @@
         $stmt->execute();
 
         header("HTTP/1.1 200 OK");
-        echo "data upadated";
+        echo "data updated";
         exit;
     }
 
@@ -73,15 +78,3 @@
         exit;
     }
 ?>
-
-<!-- var settings = {
-                    "url": "https://angel609.es/testproyects/Data/events.php?useremail=" + 
-                        window.localStorage.getItem("username") +
-                        "&title=" + t + "&start=" + a+ "&allDay=" + b + "&className=" + d + "&id=" + s,
-                    "method": "PUT",
-                    "timeout": 0,
-                };
-                  
-                $.ajax(settings).done(function (response) {
-                    alert(response);
-                }); -->

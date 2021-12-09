@@ -9,6 +9,22 @@
     <meta content="Themesbrand" name="author" />
     
     <?php include 'layouts/headerStyle.php'; ?>
+
+    <style>
+        #avatar-letter {
+            left: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 2.5rem;
+            font-weight: 500;
+            width: 86px;
+            height: 86px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            line-height: 5.5rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,7 +49,10 @@
                             <form class="mt-4" id="unlock">
 
                                 <div class="pt-3 text-center">
-                                    <img src="public/images/users/user-4.jpg" class="rounded-circle img-thumbnail avatar-lg" alt="thumbnail">
+                                    <div style="position: relative;">
+                                        <img id="avatarimg" class="rounded-circle img-thumbnail avatar-lg">
+                                        <div id="avatar-letter"></div>
+                                    </div>
                                     <h6 class="font-size-16 mt-3" id="lblTwo">User email</h6>
                                 </div>
 
@@ -59,8 +78,6 @@
                     <p>¿No eres tú ? regresa <a href="index.php" class="fw-medium text-primary"> Iniciar sesión </a> </p>
                     <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Tasking <i class="mdi mdi-heart text-danger"></i> by Angel609</p>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -72,23 +89,4 @@
 <!-- laoder layout -->
 <?php include "layouts/loader.php"; ?>
 
-
-<script>
-    $(document).ready(function(){
-        if(localStorage.getItem("lock") != "true"){
-            let settings = {
-                "url": "pages-lock-screen.php",
-                "method": "GET",
-                "timeout": 0,
-            };
-
-            $.ajax(settings).done(function(res){
-                setTimeout(function(){
-                    window.location.href = "index.php";
-                }, 1500);
-            });
-        }
-        document.querySelector("#lblOne").innerHTML = "Hola " + localStorage.getItem("username") +", ingresa tu contraseña para desbloquear la pantalla!";
-        document.querySelector("#lblTwo").innerHTML = localStorage.getItem("useremail");
-    });
-</script>
+<script src="public/js/lockscreen_main.js"></script>

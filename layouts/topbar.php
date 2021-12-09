@@ -101,8 +101,9 @@
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: flex; justify-content: center; flex-direction: column;">
                     <img class="rounded-circle header-profile-user" >
+                    <div id="avatar-letter"></div>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
